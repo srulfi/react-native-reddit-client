@@ -4,6 +4,8 @@ import storage from 'redux-persist/lib/storage'
 import thunk from 'redux-thunk'
 import rootReducer from '../reducers'
 
+import config from '../config'
+
 const persistConfig = {
   key: 'root',
   storage,
@@ -21,6 +23,8 @@ const configureStore = () => {
   )
 
   const persistor = persistStore(store)
+
+  config.devMode && persistor.purge()
 
   return { store, persistor }
 }
