@@ -1,5 +1,5 @@
-import postsActions from './posts'
+import * as posts from './posts'
 
 export {
-  postsActions,
+  posts,
 }
