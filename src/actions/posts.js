@@ -12,7 +12,6 @@ export const fetchPosts = (postsLimit) => {
     fetch(config.API_ENDPOINT + postsLimit)
       .then(response => response.json())
       .then(responseJson => {
-        console.log(responseJson)
         let posts = responseJson && responseJson.data && responseJson.data.children
         if (posts) {
           fetchPostsSuccess(dispatch, posts)
