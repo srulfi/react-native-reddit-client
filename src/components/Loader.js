@@ -3,10 +3,12 @@ import {
   ActivityIndicator,
 } from 'react-native'
 
+import LoaderStyles from './styles/LoaderStyles'
+
 class Loader extends Component {
 
   render () {
-    return <ActivityIndicator size='large' color='blue' />
+    return <ActivityIndicator size='large' style={LoaderStyles.loader}/>
   }
 }
 
