@@ -4,7 +4,8 @@ const colors = {
   black: '#000',
   green: 'green',
   blue: 'blue',
-  grey: 'grey',
+  grey: '#333',
+  lightgray: 'lightgray',
 }
 
 export default colors

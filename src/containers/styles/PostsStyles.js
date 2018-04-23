@@ -4,6 +4,7 @@ import { Colors, Fonts, Metrics } from '../../themes'
 export default StyleSheet.create({
   container: {
     width: '100%',
+    flex: 1,
     backgroundColor: Colors.black,
   },
   postContainer: {
@@ -18,12 +19,14 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  postUnreadStatus: {
+  postStatus: {
     width: 10,
     height: 10,
     borderRadius: 5,
-    backgroundColor: Colors.blue,
     marginRight: 10,
+  },
+  postUnreadStatus: {
+    backgroundColor: Colors.blue,
   },
   postAuthor: {
     color: Colors.white,
@@ -36,6 +39,8 @@ export default StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: 10,
+    height: '60%',
+    overflow: 'hidden',
   },
   postThumbnail: {
     width: 80,
@@ -47,7 +52,7 @@ export default StyleSheet.create({
     marginHorizontal: 10,
   },
   postArrow: {
-    color: Colors.grey,
+    color: Colors.white,
   },
   postBottomRow: {
     flexDirection: 'row',
@@ -71,7 +76,18 @@ export default StyleSheet.create({
   postSeparator: {
     height: 1,
     width: '90%',
-    backgroundColor: Colors.grey,
+    backgroundColor: Colors.lightgray,
     alignSelf: 'center',
   },
+  dismissAllContainer: {
+    backgroundColor: Colors.black,
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    alignItems: 'center',
+    paddingVertical: 20,
+  },
+  dismissAllText: {
+    color: Colors.green,
+  }
 })

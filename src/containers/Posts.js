@@ -24,7 +24,8 @@ class Posts extends Component {
 
     this.state = {
       posts: props.posts || null,
-      postSelected: null
+      postSelected: null,
+      postsRead: {}
     }
   }
 
@@ -39,8 +40,43 @@ class Posts extends Component {
     }
   }
 
-  _selectPost (postId) {
-    this.setState({postSelected: postId})
+  _selectPost (post) {
+    let postId = post.data.id,
+      postsRead = this.state.postsRead
+
+    postsRead[postId] = true
+
+    this.setState({
+      postSelected: postId,
+      postsRead,
+    })
+
+    Actions.postDetail({post: post})
+  }
+
+  _dismissPost (postId) {
+    let remainingPosts = this.state.posts.filter(post => {
+      return post.data.id !== postId
+    })
+
+    this.setState({posts: remainingPosts})
+  }
+
+  _renderPostsList () {
+    if (this.state.posts) {
+      return (
+        <FlatList
+          data={this.state.posts}
+          renderItem={({ item }) => this._renderPost(item)}
+          keyExtractor={item => item.data.id}
+          ItemSeparatorComponent={() => this._renderSeparator()}
+          /*onRefresh={this.handleRefresh}
+          refreshing={this.state.refreshing}
+          onEndReached={this.handleLoadMore}
+          onEndReachedThreshold={50}*/
+        />
+      )
+    }
   }
 
   _resolveThumbnail (uri) {
@@ -48,12 +84,15 @@ class Posts extends Component {
   }
 
   _renderPost (post) {
-    let activePost = this.state.postSelected === post.id
+    let postId = post.data.id,
+      activePost = this.state.postSelected === postId,
+      postRead = this.state.postsRead[postId]
+
     return (
-      <TouchableOpacity onPress={() => this._selectPost(post.id)}>
+      <TouchableOpacity onPress={() => this._selectPost(post)}>
         <View style={[PostsStyles.postContainer, activePost && PostsStyles.postContainerSelected]}>
           <View style={PostsStyles.postTopRow}>
-            <View style={PostsStyles.postUnreadStatus} />
+            <View style={[PostsStyles.postStatus, !postRead && PostsStyles.postUnreadStatus]} />
             <Text style={PostsStyles.postAuthor}>{post.data.author}</Text>
             <Text style={PostsStyles.postEntryDate}>{getHoursAgo(post.data.created_utc)} hours ago</Text>
           </View>
@@ -63,7 +102,7 @@ class Posts extends Component {
             <Icon name='ios-arrow-forward' size={30} style={PostsStyles.postArrow} />
           </View>
           <View style={PostsStyles.postBottomRow}>
-            <TouchableOpacity onPress={() => this._dismissPost(post.id)} style={PostsStyles.postDismissButton}>
+            <TouchableOpacity onPress={() => this._dismissPost(postId)} style={PostsStyles.postDismissButton}>
               <Icon name='ios-close-circle-outline' size={25} style={PostsStyles.postDismissIcon} />
               <Text style={PostsStyles.postDismissText}>Dismiss Post</Text>
             </TouchableOpacity>
@@ -78,26 +117,25 @@ class Posts extends Component {
     return <View style={PostsStyles.postSeparator} />
   }
 
+  _renderDissmissAllButton () {
+    return (
+      <TouchableOpacity style={PostsStyles.dismissAllContainer} onPress={() => this._dismissAll()}>
+        <Text style={PostsStyles.dismissAllText}>Dismiss All</Text>
+      </TouchableOpacity>
+    )
+  }
+
+  _dismissAll () {
+    this.setState({posts: null})
+  }
+
   render () {
-    if (this.state.posts) {
-      return (
-        <View style={PostsStyles.container}>
-          <FlatList
-            data={this.state.posts}
-            renderItem={({ item }) => this._renderPost(item)}
-            keyExtractor={item => item.data.id}
-            ItemSeparatorComponent={() => this._renderSeparator()}
-            /*ListHeaderComponent={this.renderHeader}
-            ListFooterComponent={this.renderFooter}
-            onRefresh={this.handleRefresh}
-            refreshing={this.state.refreshing}
-            onEndReached={this.handleLoadMore}
-            onEndReachedThreshold={50}*/
-          />
-        </View>
-      )
-    }
-    return null
+    return (
+      <View style={PostsStyles.container}>
+        {this._renderPostsList()}
+        {this._renderDissmissAllButton()}
+      </View>
+    )
   }
 }
 
