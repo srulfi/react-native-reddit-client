@@ -25,19 +25,24 @@ class Posts extends Component {
     this.state = {
       posts: props.posts || null,
       postSelected: null,
-      postsRead: {}
+      postsRead: {},
+      refreshing: false,
     }
   }
 
   componentDidMount () {
-    //for now to avoid hardcoding, todo/nicetohave: allow user to choose from UI
-    !this.props.posts && this.props.fetchPosts(config.DEFAULT_POSTS_LIMIT)
+    !this.props.posts && this._fetchPosts()
   }
 
   componentDidUpdate (prevProps, prevState) {
     if (prevProps.posts !== this.props.posts) {
-      this.setState({posts: this.props.posts})
+      this.setState({posts: this.props.posts, refreshing: false})
     }
+  }
+
+  _fetchPosts () {
+    //for now to avoid hardcoding, todo/nicetohave: allow user to choose from UI
+    this.props.fetchPosts(config.DEFAULT_POSTS_LIMIT)
   }
 
   _selectPost (post) {
@@ -62,6 +67,11 @@ class Posts extends Component {
     this.setState({posts: remainingPosts})
   }
 
+  _handleRefresh () {
+    this.setState({refreshing: true})
+    this._fetchPosts()
+  }
+
   _renderPostsList () {
     if (this.state.posts) {
       return (
@@ -70,10 +80,8 @@ class Posts extends Component {
           renderItem={({ item }) => this._renderPost(item)}
           keyExtractor={item => item.data.id}
           ItemSeparatorComponent={() => this._renderSeparator()}
-          /*onRefresh={this.handleRefresh}
+          onRefresh={() => this._handleRefresh()}
           refreshing={this.state.refreshing}
-          onEndReached={this.handleLoadMore}
-          onEndReachedThreshold={50}*/
         />
       )
     }
