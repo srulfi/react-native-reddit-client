@@ -1,19 +1,22 @@
 import { StyleSheet } from 'react-native'
-import { Colors, Fonts, Metrics } from '../../themes'
+import { Colors, FontsSizes, Metrics } from '../../themes'
+
+const DISMISS_ALL_HEIGHT = 50
 
 export default StyleSheet.create({
   container: {
     width: '100%',
     flex: 1,
     backgroundColor: Colors.black,
+    paddingBottom: DISMISS_ALL_HEIGHT,
   },
   postContainer: {
     width: '100%',
-    height: 160,
+    height: 170,
     padding: 10,
   },
   postContainerSelected: {
-    backgroundColor: Colors.grey,
+    backgroundColor: Colors.gray,
   },
   postTopRow: {
     flexDirection: 'row',
@@ -31,6 +34,7 @@ export default StyleSheet.create({
   postAuthor: {
     color: Colors.white,
     marginRight: 10,
+    fontSize: FontsSizes.large,
   },
   postEntryDate: {
     color: Colors.white,
@@ -85,7 +89,8 @@ export default StyleSheet.create({
     bottom: 0,
     width: '100%',
     alignItems: 'center',
-    paddingVertical: 20,
+    height: DISMISS_ALL_HEIGHT,
+    justifyContent: 'center',
   },
   dismissAllText: {
     color: Colors.green,
