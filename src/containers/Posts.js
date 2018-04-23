@@ -10,7 +10,7 @@ import { Actions } from 'react-native-router-flux'
 import { connect } from 'react-redux'
 import * as actions from '../actions'
 import config from '../config'
-import { getHoursAgo } from '../utils'
+import { getHoursAgo, resolveThumbnail } from '../utils'
 
 import Icon from 'react-native-vector-icons/Ionicons'
 
@@ -87,10 +87,6 @@ class Posts extends Component {
     }
   }
 
-  _resolveThumbnail (uri) {
-    return uri === 'default' || uri === 'self' ? config.DEFAULT_THUMBNAIL : uri
-  }
-
   _renderPost (post) {
     let postId = post.data.id,
       activePost = this.state.postSelected === postId,
@@ -105,7 +101,7 @@ class Posts extends Component {
             <Text style={PostsStyles.postEntryDate}>{getHoursAgo(post.data.created_utc)} hours ago</Text>
           </View>
           <View style={PostsStyles.postMiddleRow}>
-            <Image style={PostsStyles.postThumbnail} source={{uri: this._resolveThumbnail(post.data.thumbnail)}} />
+            <Image style={PostsStyles.postThumbnail} source={{uri: resolveThumbnail(post.data.thumbnail)}} />
             <Text style={PostsStyles.postTitle}>{post.data.title}</Text>
             <Icon name='ios-arrow-forward' size={30} style={PostsStyles.postArrow} />
           </View>

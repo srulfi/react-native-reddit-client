@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
+import { resolveThumbnail } from '../utils'
 
 import PostDetailStyles from './styles/PostDetailStyles'
 
@@ -30,7 +31,7 @@ class PostDetail extends Component {
       <View style={PostDetailStyles.container}>
         <Text style={PostDetailStyles.author}>{this.post.author}</Text>
         <TouchableOpacity onPress={() => this._openLargeImage()}>
-          <Image source={{uri: this.post.thumbnail}} style={PostDetailStyles.thumbnail} />
+          <Image source={{uri: resolveThumbnail(this.post.thumbnail)}} style={PostDetailStyles.thumbnail} />
         </TouchableOpacity>
         <Text style={PostDetailStyles.title}>{this.post.title}</Text>
       </View>
